@@ -30,7 +30,7 @@ class Snake():
         self.create()
     #뱀 생성
     def create(self):
-        self.lenth = 2
+        self.length = 2
         self.positions = [(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2))]
         self.direction = random.choice([UP< DOWN, LEFT, RIGHT])
 
@@ -142,7 +142,7 @@ def main():
 
     done = False
     while not done:
-        done = game.process_events()
+        done = game.process_event()
         game.run_logic()
         game.display_frame(screen)
         pygame.display.flip()
