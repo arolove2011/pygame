@@ -54,6 +54,18 @@ class Snake():
                 new[1] < 0 or new[1] >= SCREEN_WIDTH:
             sleep(1)
             self.create()
+        else:
+            self.positions.insert(0, new)
+            if len(self.positions) > self.length:
+                self.positions.pop()
+
+    def eat(self):
+        self.length += 1
+    def draw(self, screen):
+        red, green, blue = 50 / (self.length - 1), 150, 150 / (self.length - 1)
+        for i, p in enumerate(self.positions):
+            color = (100 + red * i, green, blue * 1)
+
 
 def main():
     pygame.init()
