@@ -6,7 +6,7 @@ class God():
         self.height = height
         self.Ruler = Ruler
     def introduce(self):
-        print(f"안녕하세요. MBS뉴스입니다. 오늘은 정치인에 대해 소개나는 {self.name}이고, 나이는 {self.age}세다. {self.country}에서 태어났고, 키는 {self.height}cm이다. 위대한 {self.Ruler} 님을 찬양해라!")
+        print(f"안녕하세요. MBS뉴스입니다. 오늘은 정치인의 신상 {self.name}이고, 나이는 {self.age}세다. {self.country}에서 태어났고, 키는 {self.height}cm이다. 위대한 {self.Ruler} 님을 찬양해라!")
 
 a= God('정치인 윤X열씨', 11, '조선 민주주의 인민공화국', 146, '나')
 b = God('안병준', 11, '한국', 150, '노시환')
