@@ -33,8 +33,10 @@ class Snake():
         self.lenth = 2
         self.positions = [(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2))]
         self.direction = random.choice([UP< DOWN, LEFT, RIGHT])
+
+    #뱀 방향 조정
     def control(self, xy):
-        if (xy[0] * -1, xy[1] * -1) == self.sirection:
+        if (xy[0] * -1, xy[1] * -1) == self.direction:
             return
         else:
             self.direction = xy
@@ -65,6 +67,70 @@ class Snake():
         red, green, blue = 50 / (self.length - 1), 150, 150 / (self.length - 1)
         for i, p in enumerate(self.positions):
             color = (100 + red * i, green, blue * 1)
+            rect = pygame.Rect((p[0], p[1]), (GRID_SIZE, GRID_SIZE))
+            pygame.draw.rect(screen, color, rect)
+
+class Feed():
+    def __init__(self):
+        self.positions = (0, 0)
+        self.color = ORANGE
+        self.create()
+
+    def create(self):
+        x = random.randint(0, GRID_WIDTH - 1)
+        y = random.randint(0, GRID_HEIGHT - 1)
+        self.position = x * GRID_SIZE, y * GRID_SIZE
+
+    def draw(self, screen):
+        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, self.color, rect)
+
+class Game():
+    def __init__(self):
+        self.snake = Snake()
+        self.feed = Feed()
+        self.spped = 20
+
+    def process_event(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.snake.control(UP)
+                elif event.key == pygame.K_DOWN:
+                    self.snake.control(DOWN)
+                elif event.key == pygame.K_LEFT:
+                    self.snake.control(LEFT)
+                elif event.key == pygame.K_RIGHT:
+                    self.snake.control(RIGHT)
+        return False
+    def run_logic(self):
+        self.snake.move()
+        self.check_eat(self.snake, self.feed)
+        self.speed = (20 + self.snake.length) / 4
+
+    def check_eat(self, snake, feed):
+        if snake.positions[0] == feed.position:
+            snake.eat()
+            feed.create()
+
+    def draw_info(self, length, speed, screen):
+        info = "Length" + str(length) + "   " + "Speed: " + str(round(speed, 2))
+        font = pygame.font.SysFont('FixedSys', 30, False, False)
+        text_obj = font.render(info, True, GRAY)
+        text_rect = text_obj.get_rect()
+        text_rect.x, text_rect.y = 10, 10
+        screen.blit(text_obj, text_rect)
+
+    
+    def display_frame(self, screen):
+        screen.fill(WHITE)
+        self.draw_info(self.snake.length, self.speed, screen)
+        self.snake.draw(screen)
+        self.feed.draw(screen)
+        screen.blit(screen, (0, 0))
+
 
 
 def main():
@@ -76,9 +142,14 @@ def main():
 
     done = False
     while not done:
-        screen.fill(WHITE)
+        done = game.process_events()
         pygame.display.flip()
-        clock.tick(60)
+        game.run_logic()
+        game.display_frame(screen)
+        pygame.display.flip()
+        clock.tick(game.speed)
+
+
     pygame.quit()
 
 if __name__ == '__main__':
