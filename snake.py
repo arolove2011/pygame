@@ -138,12 +138,11 @@ def main():
     pygame.display.set_caption('Snake Game')
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    game = game()
+    game = Game()
 
     done = False
     while not done:
         done = game.process_events()
-        pygame.display.flip()
         game.run_logic()
         game.display_frame(screen)
         pygame.display.flip()
