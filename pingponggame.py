@@ -191,12 +191,15 @@ class Game(object):
             self.ball.draw(screen)
             self.player.draw(screen)
             self.enemy.draw(screen)
+
             # 게임 중앙 점선
             for x in range(0, SCREEN_WIDTH, 24):
                 pygame.draw.rect(screen, WHITE, [x, int(SCREEN_HEIGHT / 2), 10, 10])
+
             # 적 점수 표시
             enemy_score_label = self.font.render(str(self.enemy_score), True, WHITE)
             screen.blit(enemy_score_label, (10, 260))
+            
             # 플레이어 점수 표시
             player_score_label = self.font.render(str(self.player_score), True, WHITE)
             screen.blit(player_score_label, (10, 340))
