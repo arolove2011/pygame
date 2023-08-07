@@ -121,7 +121,7 @@ class Game():
         bounce_sound = pygame.mixer.Sound(os.path.join(assets_path, "bounce.wav"))
         ping_sound = pygame.mixer.Sound(os.path.join(assets_path, "ping.wav"))
         pong_sound = pygame.mixer.Sound(os.path.join(assets_path, "pong.wav"))
-        self.font = pygame.mixer.Sound("맑은 고딕", 50, False, False)
+        self.font = pygame.font.SysFont("맑은 고딕", 50, False, False)
         self.ball = Ball(bounce_sound)
         self.player = Player(ping_sound)
         self.enemy = Enemy(pong_sound)
@@ -168,17 +168,49 @@ class Game():
         screen.blit(label, (pos_x, pos_y))
         pygame.display.update()
 
+    def display_fame(self, screen):
+        screen.fill(BLUE)
+
+        #플레이어 점수가 10점일 때
+        if self.player_score == 10:
+            self.display_message(screen, "승리", WHITE)
+            self.player_score = 0
+            self.enemy_score = 0
+            pygame.time.wait(2000)
+        else:
+            self.ball.draw(screen)
+            self.player.draw(screen)
+            self.enemy.draw(screen)
+
+            # 게임 중앙 점선
+            for x in range(0, SCREEN_WIDTH, 24):
+                pygame.draw.rect(screen, WHITE, [x, int(SCREEN_HEIGHT / 2), 10, 10])
+
+            # 적 점수 표시
+            enemy_score_label = self.font.render(str(self.enemy_score), True, WHITE)
+            screen.blit(enemy_score_label, (10, 260))
+
+            # 플레이어 점수 표시
+            player_score_label = self.font.render(str(self.player_score), True, WHITE)
+            screen.blit(player_score_label, (10, 340))
+
+
+
 def main():
     pygame.init()
     pygame.display.set_caption("핑퐁게임")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+
     game = Game()
 
     running = True
     while running:
         running = game.process_events()
-        screen.fill(BLUE)
+        game.run_logic()
+        game.display_frame(screen)
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
+
+main()

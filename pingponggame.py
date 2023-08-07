@@ -199,7 +199,7 @@ class Game(object):
             # 적 점수 표시
             enemy_score_label = self.font.render(str(self.enemy_score), True, WHITE)
             screen.blit(enemy_score_label, (10, 260))
-            
+
             # 플레이어 점수 표시
             player_score_label = self.font.render(str(self.player_score), True, WHITE)
             screen.blit(player_score_label, (10, 340))
@@ -234,21 +234,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-import pygame
-import os
-
-
-# 색 정의
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (20, 60, 120)
-ORANGE = (250, 170, 70)
-RED = (250, 0, 0)
-
-# 게임 스크린 크기
-SCREEN_WIDTH = 480
-SCREEN_HEIGHT = 640
-
 
 
