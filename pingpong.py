@@ -14,6 +14,9 @@ RED = (250, 0, 0)
 SCREEN_WIDTH = 480
 SCREEN_HEIGHT = 640
 
+current_path = os.path.dirname(__name__)
+assets_path = os.path.join(current_path, "assets")
+
 #공 객체
 class Ball():
     def __init__(self, bounce_sound):
@@ -114,10 +117,38 @@ class Enemy():
 
 #게임 객체
 class Game():
+    def __init__(self):
+        bounce_sound = pygame.mixer.Sound(os.path.join(assets_path, "bounce.wav"))
+        ping_sound = pygame.mixer.Sound(os.path.join(assets_path, "ping.wav"))
+        pong_sound = pygame.mixer.Sound(os.path.join(assets_path, "pong.wav"))
+        self.font = pygame.mixer.Sound("맑은 고딕", 50, False, False)
+        self.ball = Ball(bounce_sound)
+        self.player = Player(ping_sound)
+        self.enemy = Enemy(pong_sound)
+        self.player_score = 0
+        self.enemy_score = 0
+
     def process_events(self):
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.player.dx -= 5
+                elif event.key == pygame.K_RIGHT:
+                    self.player.dx += 5
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    self.player.dx = 0
+                    
+        return True
+    def run_logic(self):
+        self.ball.update()
+        self.player.update(self.ball)
+        self.enemy.update(self.ball)
+
+
 
 def main():
     pygame.init()
