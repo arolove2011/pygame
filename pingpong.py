@@ -47,7 +47,7 @@ class Ball():
     # 공 그리기
     def draw(self, screen):
         pygame.draw.rect(screen, ORANGE, self.rect)
-        
+
 
 # 플레이어 객체
 class Player(object):
@@ -86,6 +86,13 @@ class Enemy():
     # 업데이트
     def update(self, ball):
 
+        # 적보다 공이 오른쪽에 있을 때
+        if self.rect.centerx < ball.rect.centerx:
+            diff = ball.rect.centerx - self.rect.centerx
+            if diff <= 4:
+                self.rect.centerx = ball.rect.centerx
+            else:
+                self.rect.x += 4
         # 적보다 공이 왼쪽에 있을 때
         if self.rect.centerx > ball.rect.centerx:
             diff = self.rect.centerx - ball.rect.centerx
@@ -94,13 +101,6 @@ class Enemy():
             else:
                 self.rect.x -= 4
 
-        # 적보다 공이 오른쪽에 있을 때
-        elif self.rect.centerx < ball.rect.centerx:
-            diff = ball.rect.centerx - self.rect.centerx
-            if diff <= 4:
-                self.rect.centerx = ball.rect.centerx
-            else:
-                self.rect.x += 4
 
         # 적이 공과 충돌한 경우
         if self.rect.colliderect(ball.rect):
