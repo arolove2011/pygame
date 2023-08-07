@@ -148,7 +148,25 @@ class Game():
         self.player.update(self.ball)
         self.enemy.update(self.ball)
 
+        #공이 위로 나간 경우(player 승)
+        if self.ball.rect.top[1] < 0:
+            self.player_score += 1
+            self.ball.reset(self.player.rect.centerx, self.player.rect.centery)
 
+        #공이 아래로 나간 경우(enemy 승)
+        if self.ball.rect.bottom[1] < SCREEN_HEIGHT:
+            self.enemy_score += 1
+            self.ball.reset(self.enemy.rect.centerx, self.enemy.rect.centery)
+
+# 메시지 출력
+    def display_message(self, screen, message, color):
+        label = self.font.render(message, True, color)
+        width = label.get_width()
+        height = label.get_height()
+        pos_x = SCREEN_WIDTH // 2 - (width / 2)
+        pos_y = SCREEN_HEIGHT // 2 - (height / 2)
+        screen.blit(label, (pos_x, pos_y))
+        pygame.display.update()
 
 def main():
     pygame.init()
