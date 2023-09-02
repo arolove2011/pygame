@@ -20,7 +20,7 @@ lane_count = 5
 speed = 10
 
 class Lane():
-    def __init_(self):
+    def __init__(self):
         self.color = white
         self.width = 10
         self.height = 80
@@ -36,7 +36,7 @@ class Lane():
         self.draw(screen)
     def draw(self, screen):
         next_lane = self.y
-        for i in range(self.acount):
+        for i in range(self.count):
             pygame.draw.rect(screen, self.color, (self.x, next_lane, self.width, self.height))
             next_lane += self.height + self.gap
 class Car():
@@ -51,7 +51,7 @@ class Car():
         self.image_path_list = [os.path.join(car_images_path, file) for file in image_file_list if file.endswith(".png")]
         
         crash_image_path = resource_path('assets/crash.png')
-        self.crash_image = pygame.mixer.Sound(crash_image_path)
+        self.crash_image = pygame.image.load(crash_image_path)
 
         crash_sound_path = resource_path('assets/crash.wav')
         self.crash_sound = pygame.mixer.Sound(crash_sound_path)
@@ -134,79 +134,82 @@ class Game():
         self.cars = []
         for i in range(car_c):
             car = Car()
-            self.score = 0
-            self.menu_on = True
+            self.cars.append(car)
+        self.score = 0
+        self.menu_on = True
 
-        def process_event(self):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return False
-                if self.menu_on:
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            pygame.mixer.music.play(-1)
-                            pygame.mouse.set_visible(False)
-                            self.score = 0
-                            self.menu_on = False
-                            self.player.load()
-                            for car in self.cars:
-                                car.load_random()
-                            sleep(4)
-                else:
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_UP:
-                            self.player.dy -= 5
-                        elif event.key == pygame.K_DOWN:
-                            self.player.dy += 5
-                        elif event.key == pygame.K_LEFT:
-                            self.player.dx -= 5
-                        elif event.key == pygame.K_RIGHT:
-                            self.player.dx += 5
-                    elif event.type == pygame.KEYUP:
-                        if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                            self.player.dy = 0
-                        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                            self.player.dx = 0
-                return True
-            
-            def run_logic(self, screen):
-                for car in self.cars:
-                    if car.y > screen_height:
-                        self.score += 10
-                        car.load_random()
-                        
-                    if self.player.check.check_crash(car):
-                        self.menu_on = True
-                        pygame.mixer.music.stop()
-                        self.player.crash_sound.play()
-                        self.player.draw_crash(screen)
-                        car.draw__crash(screen)
-                        sleep(1)
-                        pygame.mouse.set_visible(True)
+        self.player = Car()
 
-                    for com in self.cars:
-                        if car == com:
-                            pass
-                        elif car.check_crash(com):
-                            self.score += 10
-                            car.collision_sound.play()
-                            car.draw_crash(screen)
+    def process_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if self.menu_on:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        pygame.mixer.music.play(-1)
+                        pygame.mouse.set_visible(False)
+                        self.score = 0
+                        self.menu_on = False
+                        self.player.load()
+                        for car in self.cars:
                             car.load_random()
-                            com.draw_crash(screen)
-                            com.load_random()
+                        sleep(4)
+            else:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        self.player.dy -= 5
+                    elif event.key == pygame.K_DOWN:
+                        self.player.dy += 5
+                    elif event.key == pygame.K_LEFT:
+                        self.player.dx -= 5
+                    elif event.key == pygame.K_RIGHT:
+                        self.player.dx += 5
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                        self.player.dy = 0
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                        self.player.dx = 0
+        return True
+            
+    def run_logic(self, screen):
+        for car in self.cars:
+            if car.y > screen_height:
+                self.score += 10
+                car.load_random()
+                
+            if self.player.check_crash(car):
+                self.menu_on = True
+                pygame.mixer.music.stop()
+                self.player.crash_sound.play()
+                self.player.draw_crash(screen)
+                car.draw_crash(screen)
+                sleep(1)
+                pygame.mouse.set_visible(True)
+
+            for com in self.cars:
+                if car == com:
+                    pass
+                elif car.check_crash(com):
+                    self.score += 10
+                    car.collision_sound.play()
+                    car.draw_crash(screen)
+                    car.load_random()
+                    com.draw_crash(screen)
+                    com.load_random()
     def draw_text(self, screen, text, font, x, y, main_color):
         text_obj = font.render(text, True, main_color)
         text_rect = text_obj.get_rect()
-        text_rect.conter = x, y
-        screen.bilt(text_obj, text_rect)
+        text_rect.center = x, y
+        screen.blit(text_obj, text_rect)
     def display_menu(self, screen):
         screen.fill(gray)
-        screen.bilt(self.image_intro, [40, 150])
+        screen.blit(self.image_intro, [40, 150])
         draw_x = screen_width//2
         draw_y = screen_height//2
-        self.draw.text(screen, "레이싱 게임", self.font_40, draw_x, draw_y+50, black)
-        self.draw.text(screen, "점수"+str(self.score), self.font_40, draw_x, draw_y+50, white)
-        self.draw.text(screen, "스페이스 키를 눌러 실행하시오", self.font_40, draw_x, draw_y+50, red)
+        self.draw_text(screen, "레이싱 게임", self.font_40, draw_x, draw_y+50, black)
+        self.draw_text(screen, "점수"+str(self.score), self.font_40, draw_x, draw_y+50, white)
+        self.draw_text(screen, "스페이스 키를 눌러 실행하시오", self.font_40, draw_x, draw_y+50, red)
 
     def display_frame(self, screen):
         screen.fill(gray)
@@ -220,7 +223,7 @@ class Game():
             car.draw(screen)
             car.move()
 
-        self.draw_text(screen, "점수:"+str(self.score))
+        self.draw_text(screen, "점수:"+str(self.score), self.font_30, 20, 30, white)
 def resource_path(path):
     try:
         base_path = sys._MEIPASS
@@ -237,7 +240,7 @@ def main():
 
     running = True
     while running:
-        running = game.process_event()
+        running = game.process_events()
         if game.menu_on:
            game.display_menu(screen)
         else:
