@@ -69,6 +69,8 @@ class Car():
         self.width = self.image.get_rect().width
         self.height = self.image.get_rect().height
 
+
+    #자동차 로드
     def load(self):
         self.load_image()
         self.x = screen_width //2
@@ -76,6 +78,27 @@ class Car():
         self.dx = 0
         self.dy = 0
         self.engine_sound.play()
+
+    #자동차 랜덤 로드
+    def load_random(self):
+            self.load_image()
+            self.x = random.randrange(0, screen_width - self.width)
+            self.y = 0 - self.height
+            self.dx = 0
+            self.dy = random.randint(5, 10)
+
+    def move(self):
+        self.x += self.dx
+        self.y += self.dy
+    
+    def out_of_screen(self):
+        if self.x < 0 or self.x > screen_width-self.width:
+            self.x -= self.dx
+        if self.y <0 or self.y > screen_height-self.height:
+            self.y -= self.dy
+
+    
+
 
 
 def resource_path(path):
