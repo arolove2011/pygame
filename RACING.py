@@ -40,7 +40,7 @@ class Lane():
             pygame.draw.rect(screen, self.color, (self.x, next_lane, self.width, self.height))
             next_lane += self.height + self.gap
 class Car():
-    def __init__(self, x, y, dx, dy):
+    def __init__(self, x=0, y=0, dx=0, dy=0):
         self.x = x
         self.y = y
         self.dx= dx
@@ -162,7 +162,65 @@ class Game():
                             self.player.dx -= 5
                         elif event.key == pygame.K_RIGHT:
                             self.player.dx += 5
+                    elif event.type == pygame.KEYUP:
+                        if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                            self.player.dy = 0
+                        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                            self.player.dx = 0
+                return True
+            
+            def run_logic(self, screen):
+                for car in self.cars:
+                    if car.y > screen_height:
+                        self.score += 10
+                        car.load_random()
+                        
+                    if self.player.check.check_crash(car):
+                        self.menu_on = True
+                        pygame.mixer.music.stop()
+                        self.player.crash_sound.play()
+                        self.player.draw_crash(screen)
+                        car.draw__crash(screen)
+                        sleep(1)
+                        pygame.mouse.set_visible(True)
 
+                    for com in self.cars:
+                        if car == com:
+                            pass
+                        elif car.check_crash(com):
+                            self.score += 10
+                            car.collision_sound.play()
+                            car.draw_crash(screen)
+                            car.load_random()
+                            com.draw_crash(screen)
+                            com.load_random()
+    def draw_text(self, screen, text, font, x, y, main_color):
+        text_obj = font.render(text, True, main_color)
+        text_rect = text_obj.get_rect()
+        text_rect.conter = x, y
+        screen.bilt(text_obj, text_rect)
+    def display_menu(self, screen):
+        screen.fill(gray)
+        screen.bilt(self.image_intro, [40, 150])
+        draw_x = screen_width//2
+        draw_y = screen_height//2
+        self.draw.text(screen, "레이싱 게임", self.font_40, draw_x, draw_y+50, black)
+        self.draw.text(screen, "점수"+str(self.score), self.font_40, draw_x, draw_y+50, white)
+        self.draw.text(screen, "스페이스 키를 눌러 실행하시오", self.font_40, draw_x, draw_y+50, red)
+
+    def display_frame(self, screen):
+        screen.fill(gray)
+        for lane in self.lanes:
+            lane.move(speed, screen)
+        self.player.draw(screen)
+        self.player.move()
+        self.player.out_of_screen()
+
+        for car in self.cars:
+            car.draw(screen)
+            car.move()
+
+        self.draw_text(screen, "점수:"+str(self.score))
 def resource_path(path):
     try:
         base_path = sys._MEIPASS
@@ -175,27 +233,18 @@ def main():
     pygame.display.set_caption("자동차 게임")
     screen = pygame.display.set_mode((screen_width, screen_height))
     clock = pygame.time.Clock()
+    game = Game()
 
     running = True
     while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        screen.fill(gray)
+        running = game.process_event()
+        if game.menu_on:
+           game.display_menu(screen)
+        else:
+           game.run_logic(screen)
+           game.display_frame(screen)
+        
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
 main()
-
-
-
-
-
-
-
-
-# # 자동차 객체
-# class Car():
-#     def __init__(self, x=0, y=0, dx=0, dy=0)
-#         self.x =x
-#         self.y =y

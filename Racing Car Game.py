@@ -36,6 +36,7 @@ class Car():
         crash_sound_path = resource_path('assets/crash.wav')
         collision_sound_path = resource_path('assets/collision.wav')
         engine_sound_path = resource_path('assets/engine.wav')
+
         self.crash_sound = pygame.mixer.Sound(crash_sound_path)
         self.collision_sound = pygame.mixer.Sound(collision_sound_path)
         self.engine_sound = pygame.mixer.Sound(engine_sound_path)
