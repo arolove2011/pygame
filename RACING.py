@@ -90,16 +90,78 @@ class Car():
     def move(self):
         self.x += self.dx
         self.y += self.dy
-    
+
+    #스크린 범위 체크
     def out_of_screen(self):
         if self.x < 0 or self.x > screen_width-self.width:
             self.x -= self.dx
         if self.y <0 or self.y > screen_height-self.height:
             self.y -= self.dy
 
-    
+    def check_crash(self, car):
+        if (self.x+self.width >car.x) and (self.x < car.x + car.width) and (self.y < car.y + car.height) and (self.y + self.height):
+            return True
+        else:
+            return False
+        
+    # 자동차 그리기
+    def draw(self, screen):
+        screen.blit(self.image, [self.x, self.y])
 
+    # 자동차 충돌 그리기
+    def draw_crash(self, screen):
+        width = self.crash_image.get_rect().width
+        height = self.crash_image.get_rect().height
+        draw_x = self.x + self.width//2-width / 2
+        draw_y = self.y + self.height // 2 - height // 2
+        screen.blit(self.crash_image, (draw_x, draw_y))
+        pygame.display.update()
 
+class Game():
+    def __init__(self):
+        menu_image_path = resource_path("assets/menu_car.png")
+        self.image_intro = pygame.image.load(menu_image_path)
+        pygame.mixer.music.load(resource_path("assets/race.wav"))
+        self.font_40 = pygame.font.SysFont("Malgun Gothic", 40)
+        self.font_30 = pygame.font.SysFont("Malgun Gothic", 30)
+
+        self.lanes = []
+        for i in range(lane_count):
+            lane = Lane()
+            lane.x = i *int(lane.space+lane.width)
+            self.lanes.append(lane)
+
+        self.cars = []
+        for i in range(car_c):
+            car = Car()
+            self.score = 0
+            self.menu_on = True
+
+        def process_event(self):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return False
+                if self.menu_on:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_SPACE:
+                            pygame.mixer.music.play(-1)
+                            pygame.mouse.set_visible(False)
+                            self.score = 0
+                            self.menu_on = False
+                            self.player.load()
+                            for car in self.cars:
+                                car.load_random()
+                            sleep(4)
+                else:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_UP:
+                            self.player.dy -= 5
+                        elif event.key == pygame.K_DOWN:
+                            self.player.dy += 5
+                        elif event.key == pygame.K_LEFT:
+                            self.player.dx -= 5
+                        elif event.key == pygame.K_RIGHT:
+                            self.player.dx += 5
 
 def resource_path(path):
     try:
