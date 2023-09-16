@@ -208,8 +208,8 @@ class Game():
         draw_x = screen_width//2
         draw_y = screen_height//2
         self.draw_text(screen, "레이싱 게임", self.font_40, draw_x, draw_y+50, black)
-        self.draw_text(screen, "점수"+str(self.score), self.font_40, draw_x, draw_y+50, white)
-        self.draw_text(screen, "스페이스 키를 눌러 실행하시오", self.font_40, draw_x, draw_y+50, red)
+        self.draw_text(screen, "점수"+str(self.score), self.font_40, draw_x, draw_y+150, white)
+        self.draw_text(screen, "스페이스 키를 눌러 실행하시오", self.font_30, draw_x, draw_y+200, red)
 
     def display_frame(self, screen):
         screen.fill(gray)
