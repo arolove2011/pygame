@@ -157,6 +157,7 @@ class Game():
     #뱀이 함정에 닿은면 체크-
     def check_reach(self, snake, trap):
         if snake.positions[0]== trap.position:
+            trap.eat()
             font = pygame.font.SysFont('Gulim', 40, True, False)
             text = font.render("Game Over", True, BLACK)
             screen.blit(text, [200, 600])
@@ -181,6 +182,7 @@ class Game():
         self.snake.draw(screen)
         self.feed.draw(screen)
         self.feed2.draw(screen)
+        self.trap.draw(screen)
         screen.blit(screen, (0, 0))
 
 
