@@ -21,6 +21,8 @@ YELLOW = (255, 255, 222)
 RED = (153, 0, 0)
 BLACK = (0, 0, 0)
 
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
 #방향 전역변수
 UP = (0, -1)
 DOWN = (0, 1)
@@ -108,8 +110,8 @@ class Trap():
 
     #함정 그리기
     def draw(self, screen):
-        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, self.color, rect)
+        circle = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        pygame.draw.circle(screen, self.color, circle)
 
 
 
@@ -154,7 +156,9 @@ class Game():
     #뱀이 함정에 닿은면 체크-
     def check_reach(self, snake, trap):
         if snake.positions[0]== trap.position:
-            trap.eat()
+            font = pygame.font.SysFont('Gulim', 40, True, False)
+            text = font.render("Game Over", True, BLACK)
+            screen.blit(text, [200, 600])
             
 
 
@@ -183,7 +187,6 @@ def main():
     #게임 초기화 및 환경 설정
     pygame.init()
     pygame.display.set_caption('뱀 게임')
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     game = Game()
 
