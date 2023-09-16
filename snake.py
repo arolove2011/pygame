@@ -50,7 +50,7 @@ class Snake():
         cur = self.positions[0]
         x, y = self.direction
         new = (cur[0]+(x*GRID_SIZE), (cur[1]+(y*GRID_SIZE)))
-
+        
         #뱀이 자기 몸통에 닿았을 경우 뱀 처음부터 다시 생성
         if new in self.positions[2:]:
             sleep(1)
