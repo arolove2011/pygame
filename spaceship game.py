@@ -23,7 +23,7 @@ class Spaceship(pygame.sprite.Sprite):
     def __init__(self):
         super(Spaceship, self).__init__()
         spaceship_image_path = resource_path('assets/spaceship.png')
-        explosion_image_path = resource_path('assets/explosion.png')
+        explosion_image_path = resource_path('assetfs/explosion.png')
         explosion_sound_path = resource_path('assets/explosion.wav')
         self.image = pygame.image.load(spaceship_image_path)
         self.explosion_image = pygame.image.load(explosion_image_path)
