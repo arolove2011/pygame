@@ -15,7 +15,7 @@ GRID_HEIGHT = SCREEN_HEIGHT/ GRID_SIZE
 
 #색상 전역변수
 WHITE = (255, 255, 255)
-CORAl= (255, 100, 100)
+CORAl= (255, 102, 51)
 GRAY = (100, 100, 100)
 YELLOW = (255, 255, 245)
 BLACK = (0, 0, 0)
@@ -48,9 +48,9 @@ class Snake():
     #뱀 이동
     def move(self):
         cur = self.positions[0]
-        x, y = self.direction
+        x,y = self.direction
         new = (cur[0]+(x*GRID_SIZE), (cur[1]+(y*GRID_SIZE)))
-        
+
         #뱀이 자기 몸통에 닿았을 경우 뱀 처음부터 다시 생성
         if new in self.positions[2:]:
             sleep(1)
