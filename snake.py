@@ -15,11 +15,12 @@ GRID_HEIGHT = SCREEN_HEIGHT/ GRID_SIZE
 
 #색상 전역변수
 WHITE = (255, 255, 255)
-CORAl= (255, 102, 51)
+CORAl= (255, 102, 102)
 GRAY = (100, 100, 100)
-YELLOW = (255, 255, 245)
+YELLOW = (255, 255, 222)
+RED = (153, 0, 0)
 BLACK = (0, 0, 0)
-ORANGE = (255, 255, 30)
+
 #방향 전역변수
 UP = (0, -1)
 DOWN = (0, 1)
@@ -48,7 +49,7 @@ class Snake():
     #뱀 이동
     def move(self):
         cur = self.positions[0]
-        x,y = self.direction
+        x, y = self.direction
         new = (cur[0]+(x*GRID_SIZE), (cur[1]+(y*GRID_SIZE)))
 
         #뱀이 자기 몸통에 닿았을 경우 뱀 처음부터 다시 생성
@@ -92,12 +93,34 @@ class Feed():
         rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.color, rect)
 
+#함정 객체
+class Trap():
+    def __init__(self):
+        self.positions = (0, 0)
+        self.color = RED
+        self.create()
+
+    #함정 생성
+    def create(self):
+        x = random.randint(0, GRID_WIDTH - 1)
+        y = random.randint(0, GRID_HEIGHT - 1)
+        self.position = x * GRID_SIZE, y * GRID_SIZE
+
+    #함정 그리기
+    def draw(self, screen):
+        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, self.color, rect)
+
+
+
 #게임 객체
 class Game():
     def __init__(self):
         self.snake = Snake()
         self.feed = Feed()
-        self.speed = 130
+        self.feed2 = Feed()
+        self.trap = Trap()
+        self.speed = 200
 
     #게임 이벤트 처리 및 조작
     def process_event(self):
@@ -119,6 +142,7 @@ class Game():
     def run_logic(self):
         self.snake.move()
         self.check_eat(self.snake, self.feed)
+        self.check_eat(self.snake, self.feed2)
         self.speed = (20 + self.snake.length) / 4
 
     #뱀이 먹이를 먹었는지 체크
@@ -127,10 +151,18 @@ class Game():
             snake.eat()
             feed.create()
 
+    #뱀이 함정에 닿은면 체크-
+    def check_reach(self, snake, trap):
+        if snake.positions[0]== trap.position:
+            trap.eat()
+            snake.create()
+
+
+
     #게임 정보 출력
     def draw_info(self, length, speed, screen):
-        info = "Length is " + str(length) + "   " + "Speed is " + str(round(speed, 4))
-        font = pygame.font.SysFont('FixedSys', 30, False, False)
+        info = "뱀의 길이: " + str(length) + "   " + "뱀의 속도: " + str(round(speed, 4))
+        font = pygame.font.SysFont('Gulim', 30, False, False)
         text_obj = font.render(info, True, BLACK)
         text_rect = text_obj.get_rect()
         text_rect.x, text_rect.y = 10, 10
@@ -142,6 +174,7 @@ class Game():
         self.draw_info(self.snake.length, self.speed, screen)
         self.snake.draw(screen)
         self.feed.draw(screen)
+        self.feed2.draw(screen)
         screen.blit(screen, (0, 0))
 
 
