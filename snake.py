@@ -155,7 +155,7 @@ class Game():
     def check_reach(self, snake, trap):
         if snake.positions[0]== trap.position:
             trap.eat()
-            snake.create()
+            
 
 
 
