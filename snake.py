@@ -38,7 +38,7 @@ class Snake():
     def create(self):
         self.length = 2
         self.positions = [(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2))]
-        self.direction = random.choice([UP< DOWN, LEFT, RIGHT])
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
 
 
     #뱀 방향 조정
@@ -106,12 +106,13 @@ class Trap():
     def create(self):
         x = random.randint(0, GRID_WIDTH - 1)
         y = random.randint(0, GRID_HEIGHT - 1)
-        self.position = x * GRID_SIZE, y * GRID_SIZE
+        self.positions = x * GRID_SIZE, y * GRID_SIZE
+        print(self.positions)
 
     #함정 그리기
     def draw(self, screen):
-        circle = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
-        pygame.draw.circle(screen, self.color, circle)
+        circle = pygame.Rect(self.positions)
+        pygame.draw.circle(screen, self.color, circle, 30)
 
 
 
@@ -156,10 +157,10 @@ class Game():
 
     #뱀이 함정에 닿은면 체크-
     def check_reach(self, snake, trap):
-        if snake.positions[0]== trap.position:
+        if snake.positions[0]== trap.positions:
             trap.eat()
             font = pygame.font.SysFont('Gulim', 40, True, False)
-            text = font.render("Game Over", True, BLACK)
+            text = font.render("게임 오버 ㅋ", True, BLACK)
             screen.blit(text, [200, 600])
             
             
