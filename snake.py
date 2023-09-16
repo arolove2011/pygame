@@ -19,6 +19,7 @@ CORAl= (255, 100, 100)
 GRAY = (100, 100, 100)
 YELLOW = (255, 255, 245)
 BLACK = (0, 0, 0)
+ORANGE = (255, 255, 30)
 #방향 전역변수
 UP = (0, -1)
 DOWN = (0, 1)
@@ -35,6 +36,7 @@ class Snake():
         self.length = 2
         self.positions = [(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2))]
         self.direction = random.choice([UP< DOWN, LEFT, RIGHT])
+
 
     #뱀 방향 조정
     def control(self, xy):
@@ -83,23 +85,6 @@ class Feed():
     def create(self):
         x = random.randint(0, GRID_WIDTH - 1)
         y = random.randint(0, GRID_HEIGHT - 1)
-        self.position = x * GRID_SIZE, y * GRID_SIZE
-
-    #먹이 그리기
-    def draw(self, screen):
-        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, self.color, rect)
-
-class Feed1():
-    def __init__(self):
-        self.positions = (0, 0)
-        self.color = CORAl
-        self.create()
-
-    #먹이 생성
-    def create(self):
-        x = random.randint(0, GRID_WIDTH - 3)
-        y = random.randint(0, GRID_HEIGHT - 3)
         self.position = x * GRID_SIZE, y * GRID_SIZE
 
     #먹이 그리기
