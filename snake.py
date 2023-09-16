@@ -145,6 +145,7 @@ class Game():
         self.snake.move()
         self.check_eat(self.snake, self.feed)
         self.check_eat(self.snake, self.feed2)
+        self.check_reach(self.snake, self.trap)
         self.speed = (20 + self.snake.length) / 4
 
     #뱀이 먹이를 먹었는지 체크
@@ -159,6 +160,7 @@ class Game():
             font = pygame.font.SysFont('Gulim', 40, True, False)
             text = font.render("Game Over", True, BLACK)
             screen.blit(text, [200, 600])
+            
             
 
 
