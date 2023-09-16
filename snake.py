@@ -18,7 +18,7 @@ WHITE = (255, 255, 255)
 CORAl= (255, 100, 100)
 GRAY = (100, 100, 100)
 YELLOW = (255, 255, 240)
-
+BLACK = (0, 0, 0)
 #방향 전역변수
 UP = (0, -1)
 DOWN = (0, 1)
@@ -144,9 +144,9 @@ class Game():
 
     #게임 정보 출력
     def draw_info(self, length, speed, screen):
-        info = "Length is " + str(length) + "   " + "Speed is " + str(round(speed, 2))
+        info = "Length is " + str(length) + "   " + "Speed is " + str(round(speed, 4))
         font = pygame.font.SysFont('FixedSys', 30, False, False)
-        text_obj = font.render(info, True, GRAY)
+        text_obj = font.render(info, True, BLACK)
         text_rect = text_obj.get_rect()
         text_rect.x, text_rect.y = 10, 10
         screen.blit(text_obj, text_rect)
