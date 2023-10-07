@@ -1,3 +1,4 @@
+# 
 import pygame
 import os
 import sys
@@ -111,8 +112,10 @@ class Trap():
 
     #함정 그리기
     def draw(self, screen):
-        circle = pygame.Rect((self.positions[0], self.positions[1]), (GRID_SIZE, GRID_SIZE))
-        pygame.draw.circle(screen, self.color)
+        circle = self.positions
+        pygame.draw.circle(screen, self.color, circle, 30)
+
+
 
 #게임 객체
 class Game():
@@ -156,7 +159,7 @@ class Game():
     #뱀이 함정에 닿은면 체크-
     def check_reach(self, snake, trap):
         if snake.positions[0]== trap.positions:
-            trap.eat()
+            #trap.eat()
             font = pygame.font.SysFont('Gulim', 40, True, False)
             text = font.render("게임 오버", True, BLACK)
             screen.blit(text, [200, 600])
@@ -206,3 +209,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
