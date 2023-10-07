@@ -89,11 +89,11 @@ class Feed():
     def create(self):
         x = random.randint(0, GRID_WIDTH - 1)
         y = random.randint(0, GRID_HEIGHT - 1)
-        self.position = x * GRID_SIZE, y * GRID_SIZE
+        self.positions = x * GRID_SIZE, y * GRID_SIZE
 
     #먹이 그리기
     def draw(self, screen):
-        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        rect = pygame.Rect((self.positions[0], self.positions[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.color, rect)
 
 #함정 객체
@@ -125,6 +125,7 @@ class Game():
         self.feed2 = Feed()
         self.trap = Trap()
         self.speed = 200
+        self.is_play = True
 
     #게임 이벤트 처리 및 조작
     def process_event(self):
@@ -140,6 +141,8 @@ class Game():
                     self.snake.control(LEFT)
                 elif event.key == pygame.K_RIGHT:
                     self.snake.control(RIGHT)
+                elif event.key == pygame.K_r:
+                    self.__init__()
         return False
     
     #게임 로직 수행
@@ -152,17 +155,20 @@ class Game():
 
     #뱀이 먹이를 먹었는지 체크
     def check_eat(self, snake, feed):
-        if snake.positions[0] == feed.position:
+        print(snake.positions[0], feed.positions)
+        if snake.positions[0] == feed.positions:
             snake.eat()
             feed.create()
 
     #뱀이 함정에 닿은면 체크-
     def check_reach(self, snake, trap):
         if snake.positions[0]== trap.positions:
-            #trap.eat()
+            # trap.eat()
             font = pygame.font.SysFont('Gulim', 40, True, False)
             text = font.render("게임 오버", True, BLACK)
             screen.blit(text, [200, 600])
+            self.is_play=False
+            snake.create()
             
             
 
@@ -181,11 +187,18 @@ class Game():
     def display_frame(self, screen):
         screen.fill(YELLOW)
         self.draw_info(self.snake.length, self.speed, screen)
-        self.snake.draw(screen)
-        self.feed.draw(screen)
-        self.feed2.draw(screen)
-        self.trap.draw(screen)
-        screen.blit(screen, (0, 0))
+        if self.is_play:
+            self.snake.draw(screen)
+            self.feed.draw(screen)
+            self.feed2.draw(screen)
+            self.trap.draw(screen)
+            screen.blit(screen, (0, 0))
+        else:
+            #screen.blit(text_obj, text_rect)
+            self.draw_text(screen, "마우스 버튼을 누르면 게임이 시작됩니다.",
+                       self.font_30, draw_x, draw_y + 180, BLACK)
+
+            pass
 
 
 
