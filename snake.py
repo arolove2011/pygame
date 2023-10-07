@@ -1,4 +1,3 @@
-# 
 import pygame
 import os
 import sys
@@ -195,10 +194,17 @@ class Game():
             screen.blit(screen, (0, 0))
         else:
             #screen.blit(text_obj, text_rect)
-            self.draw_text(screen, "마우스 버튼을 누르면 게임이 시작됩니다.",
-                       self.font_30, draw_x, draw_y + 180, BLACK)
-
-            pass
+            # text_obj = font.render(text, True, main_color)
+            # text_rect = text_obj.get_rect()
+            # text_rect.center = x, y
+            # screen.blit(text_obj, text_rect)
+            draw_x = int(SCREEN_WIDTH / 2)
+            draw_y = int(SCREEN_HEIGHT / 4)
+            font = pygame.font.SysFont('Gulim', 40, True, False)
+            text = font.render("게임 오버 다시 시작은 r키를 누르세요.", True, BLACK)
+            screen.blit(text, [50, draw_y])
+            # self.draw_text(screen, "r key press is restart",
+            #         self.font_30, draw_x, draw_y + 180, BLACK)
 
 
 
