@@ -111,10 +111,8 @@ class Trap():
 
     #함정 그리기
     def draw(self, screen):
-        circle = pygame.Rect(self.positions)
-        pygame.draw.circle(screen, self.color, circle, 30)
-
-
+        circle = pygame.Rect((self.positions[0], self.positions[1]), (GRID_SIZE, GRID_SIZE))
+        pygame.draw.circle(screen, self.color)
 
 #게임 객체
 class Game():
@@ -160,7 +158,7 @@ class Game():
         if snake.positions[0]== trap.positions:
             trap.eat()
             font = pygame.font.SysFont('Gulim', 40, True, False)
-            text = font.render("게임 오버 ㅋ", True, BLACK)
+            text = font.render("게임 오버", True, BLACK)
             screen.blit(text, [200, 600])
             
             
